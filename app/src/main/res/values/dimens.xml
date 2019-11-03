@@ -4,4 +4,5 @@
     <dimen name="list_item_padding">4dp</dimen>
     <dimen name="avatar_size">100dp</dimen>
     <dimen name="height_oscar">100dp</dimen>
+    <dimen name="name_horizontal_padding">4dp</dimen>
 </resources>

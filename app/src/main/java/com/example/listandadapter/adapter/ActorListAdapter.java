@@ -1,6 +1,7 @@
 package com.example.listandadapter.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class ActorListAdapter extends BaseAdapter {
     private final Context context;
     private final LayoutInflater inflater;
 
-    public ActorListAdapter(List<Actor> actors, Context context) {
+    public ActorListAdapter(Context context, List<Actor> actors) {
         this.actors = actors;
         this.context = context;
         //this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,19 +46,51 @@ public class ActorListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowItem = inflater.inflate(R.layout.list_item_actor, parent, false);
+        ViewHolder holder;
+        if (convertView == null) {
 
-        ImageView avatarView = rowItem.findViewById(R.id.avatar);
-        TextView nameView = rowItem.findViewById(R.id.name);
-        ImageView oscarView = rowItem.findViewById(R.id.oscar);
+            holder = onCreateViewHolder(parent);
+            convertView = holder.itemView;
+            convertView.setTag(holder); //view tag
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
+        onBindViewHolder(holder, position);
+        return convertView;
+    }
+
+    private ViewHolder onCreateViewHolder(ViewGroup parent) {
+        View convertView = inflater.inflate(R.layout.list_item_actor, parent, false);
+        ViewHolder holder = new ViewHolder(convertView);
+
+        return holder;
+    }
+
+    private void onBindViewHolder(ViewHolder holder, int position) {
         Actor actor = actors.get(position);
 
-        Glide.with(context).load(actor.getAvatar()).into(avatarView); //Glide
-        nameView.setText(actor.getName());
-        if (actor.isHasOscar()) {
-            oscarView.setVisibility(View.VISIBLE);
+        //Glider
+        Glide.with(context)
+                .load(actor.getAvatar())
+                .into(holder.avatarView);
+
+        holder.nameView.setText(actor.getName());
+        holder.oscarView.setVisibility(actor.isHasOscar() ? View.VISIBLE : View.GONE);
+    }
+
+    static class ViewHolder {
+        final View itemView;
+
+        final ImageView avatarView;
+        final TextView nameView;
+        final ImageView oscarView;
+
+        ViewHolder(View itemView) {
+            this.itemView = itemView;
+            this.avatarView = itemView.findViewById(R.id.avatar);
+            this.nameView = itemView.findViewById(R.id.name);
+            this.oscarView = itemView.findViewById(R.id.oscar);
         }
-        return rowItem;
     }
 }
