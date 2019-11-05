@@ -1,6 +1,8 @@
 package com.example.listandadapter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.listandadapter.adapter.ActorListAdapter;
+import com.example.listandadapter.adapter.ActorRecyclerAdapter;
 import com.example.listandadapter.model.Actor;
 import com.example.listandadapter.utils.DataUtil;
 
@@ -21,18 +24,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        ListView listView = findViewById(R.id.list_view);
-        listView.setAdapter(new ActorListAdapter(this,
+//        setContentView(R.layout.activity_main);
+//        ListView listView = findViewById(R.id.list_view);
+//        listView.setAdapter(new ActorListAdapter(this,
+//                DataUtil.generateActors()));
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+//                ActorListAdapter adapter = (ActorListAdapter) adapterView.getAdapter();
+//                Actor actor = adapter.getItem(position);
+//                Toast.makeText(getBaseContext(), actor.getName(), LENGTH_SHORT).show();
+//            }
+//        });
+
+
+        setContentView(R.layout.activity_actor_recycler);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setAdapter(new ActorRecyclerAdapter(this,
                 DataUtil.generateActors()));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                ActorListAdapter adapter = (ActorListAdapter) adapterView.getAdapter();
-                Actor actor = adapter.getItem(position);
-                Toast.makeText(getBaseContext(), actor.getName(), LENGTH_SHORT).show();
-            }
-        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this)); //можно задачть в xml app:layoutManager
+
     }
 }
